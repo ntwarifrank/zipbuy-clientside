@@ -3,19 +3,33 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --dark-gray: #333333;
+  --white: #ffffff;
+  --alibaba-orange: #ff6a00;
+  --light-gray: #f5f5f5;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Background */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
 }
+
+/* Header & Footer */
+header, footer {
+  background-color: var(--dark-gray);
+  color: var(--white);
+}
+
+/* Buttons */
+button {
+  background-color: var(--alibaba-orange);
+  color: var(--white);
+}
+
+button:hover {
+  background-color: var(--dark-gray);
+  color: var(--alibaba-orange); /* Fixed here */
+}
+
+

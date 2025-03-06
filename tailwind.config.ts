@@ -9,8 +9,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        alibabaOrange: "#ff6a00",
+        darkGray: "#333333",
+        lightGray: "#f5f5f5",
+        white: "#ffffff",
       },
     },
   },

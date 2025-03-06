@@ -1,0 +1,11 @@
+@media (max-width: 768px) {
+    .register-image{
+      display: none;
+    }
+    .register-form{
+        width: 100%;
+    }
+    .register-container{
+        width: 90%;
+    }
+}
