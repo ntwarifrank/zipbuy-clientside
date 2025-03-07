@@ -39,7 +39,7 @@ const Nav = () => {
 async function handleLogout() {
   try {
   const res = await axios.post(
-      "http://localhost:5000/logout",
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/logout`,
       {},
       { withCredentials: true }
     );
@@ -66,7 +66,7 @@ async function handleLogout() {
      e.preventDefault();
      setSearch(e.target.value);
 
-     const res = await axios.post("http://localhost:5000/search", { searched });
+     const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/search`, { searched });
      if (res.status == 200) {
        setSearch(res.data.products);
      }

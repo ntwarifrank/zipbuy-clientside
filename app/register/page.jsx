@@ -22,7 +22,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/register", {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
         username,
         email,
         password,

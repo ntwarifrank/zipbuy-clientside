@@ -24,7 +24,7 @@ const Pay = () => {
     const amountInCents = Math.round(amount * 100);
     try {
       const response = await axios.post(
-        "http://localhost:5000/payment-intent",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-intent`,
         {
           amount: amountInCents,
           currency: currency,

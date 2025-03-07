@@ -42,7 +42,7 @@ const totalPrice = useMemo(() => {
 
     try {
       const responses = await axios.post(
-        `http://localhost:5000/specificproduct`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/specificproduct`,
         { ids: cartIds }
       );
       if (responses) {
@@ -75,7 +75,7 @@ async function handleOrder(e){
 
    const orderToken = Math.floor(100000 + Math.random() * 900000 * Math.random() * 20000).toString();
    
-    const response = await axios.post("http://localhost:5000/placeorder", {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/placeorder`, {
       email,
       fullName,
       city,

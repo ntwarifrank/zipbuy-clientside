@@ -27,7 +27,7 @@ const BuyingPage = () => {
 
    async function fetchProduct() {
      try {
-       const response = await axios.get("http://localhost:5000/allproducts");
+       const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/allproducts`);
        SetProducts(response.data.productsData);
      } catch (error) {
        SetErrorMessage(error.response.data.message || "There is error Accured");
@@ -70,7 +70,7 @@ const BuyingPage = () => {
 useEffect(() => {
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/profile", {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
         withCredentials: true,
       });
       if (!res.data.user.user){
@@ -227,7 +227,7 @@ useEffect(() => {
 
                 <div className="absolute top-16 left-[320px] w-[38%] text-4xl font-bold">
                   <div className="text-gray-700">
-                    {bannerProduct[increment].productName}
+                    {bannerProduct[increment].productName.length > 30 ? bannerProduct[increment].productName.slice(0, 35) + "..":bannerProduct[increment].productName}
                   </div>
                 </div>
 
