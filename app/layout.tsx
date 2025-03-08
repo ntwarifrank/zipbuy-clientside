@@ -29,6 +29,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} ${robotoSerif.variable}`}>
+      <head>
+        {/* Preload CSS file with 'as="style"' */}
+        <link
+          rel="preload"
+          href="/_next/static/css/f43265502ba628c8.css"
+          as="style"
+          type="text/css"
+        />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );
