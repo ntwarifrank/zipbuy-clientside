@@ -1,7 +1,6 @@
 "use client"
 import register from "../../public/login.png";
 import Image from "next/image";
-import "../../styles/styles.css";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
