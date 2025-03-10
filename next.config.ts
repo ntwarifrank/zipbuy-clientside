@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
       
     ],
   },
+  experimental: {
+    disableOptimizedLoading: true, 
+  },
+
 };
 
 export default nextConfig;
