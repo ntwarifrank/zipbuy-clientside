@@ -33,8 +33,7 @@ const Login = () => {
       );
       if (response.status == 200) {
         router.push("/buyingpage");
-         Cookies.set("token", response.data.message, { expires: 1, httpOnly: true, });
-        
+         Cookies.set("token", response.data.message, { expires: 1, httpOnly: true, }); 
         setLoading(false);
       }
     } catch (error) {
@@ -69,6 +68,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              name="email"
               placeholder="Please Enter Email"
               className="mb-4 p-2 w-full shadow-md shadow-gray-400 rounded text-[#333333]"
             />
@@ -76,6 +76,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              name="password"
               placeholder="Please Enter Password"
               className="mb-4 p-2 w-full shadow-md shadow-gray-400 rounded text-[#333333]"
             />

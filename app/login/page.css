@@ -9,14 +9,3 @@
         width: 90%;
     }
 }
-
-input{
-    width: 100%;
-    box-shadow: 0px 0px 3px gray;
-    padding: 4px;
-    text-indent: 10px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    color: black;
-    outline: none;
-  }
