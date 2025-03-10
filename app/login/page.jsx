@@ -32,8 +32,9 @@ const Login = () => {
         { withCredentials: true }
       );
       if (response.status == 200) {
+        router.push("/buyingpage");
          Cookies.set("token", response.data.message, { expires: 1, httpOnly: true, });
-         router.push("/buyingpage");
+        
         setLoading(false);
       }
     } catch (error) {
