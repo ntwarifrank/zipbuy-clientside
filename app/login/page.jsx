@@ -78,10 +78,10 @@ const Login = () => {
               placeholder="Please Enter Password"
               className="mb-4 p-2 w-full shadow-md shadow-gray-400 rounded text-[#333333]"
             />
-            <div className="w-[100%] float-start py-3">
+            <Link href={"/register"} className="w-[100%] float-start py-3">
               Don't Have an
               <span className="text-alibabaOrange"> Account</span>
-            </div>
+            </Link>
             <div>
               <button
                 type="submit"
@@ -90,14 +90,14 @@ const Login = () => {
                 Login
                 {loading ? "......" : ""}
               </button>
-             
+              <Link href={"/"}>
                 <button
                   type="submit"
                   className="rounded-lg w-[40%] text-darkGray ml-4 py-2 px-5 border border-lightGray bg-white shadow-md shadow-gray-400"
                 >
                   Cancel
                 </button>
-              
+              </Link>
             </div>
           </form>
         </div>
