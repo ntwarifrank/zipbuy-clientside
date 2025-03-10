@@ -17,9 +17,8 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    disableOptimizedLoading: true, 
+    optimizeCss: true, // Ensures CSS is used efficiently
   },
-
 };
 
 export default nextConfig;
