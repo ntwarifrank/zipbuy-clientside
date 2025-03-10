@@ -69,6 +69,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               name="email"
+              autoComplete="on"
               placeholder="Please Enter Email"
               className="mb-4 p-2 w-full shadow-md shadow-gray-400 rounded text-[#333333]"
             />
@@ -76,6 +77,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="on"
               name="password"
               placeholder="Please Enter Password"
               className="mb-4 p-2 w-full shadow-md shadow-gray-400 rounded text-[#333333]"
