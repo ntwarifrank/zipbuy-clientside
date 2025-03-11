@@ -44,8 +44,8 @@ const Login = () => {
 
   return (
     <div>
-      <div className="login-container w-[70%] mx-auto my-20 h-[400px] flex flex-row  shadow shadow-gray-500 rounded-lg">
-        <div className="login-image w-[45%] h-full rounded-l-lg border-r border-gray-500">
+      <div className="w-[70%] lg:w-[70%] xl:w-[60%] mx-auto my-20 h-[400px] flex flex-row shadow shadow-gray-500 rounded-lg">
+        <div className="login-image w-[45%] h-full rounded-l-lg border-r border-gray-500 md:hidden sm:hidden lg:flex xl:flex">
           <div className="w-[100%] h-[100%]">
             <Image
               src={register}
@@ -57,7 +57,7 @@ const Login = () => {
             />
           </div>
         </div>
-        <div className="login-form w-[55%] border rounded-r-lg px-4 py-1">
+        <div className="login-form w-[55%] border rounded-r-lg px-4 py-1 md:w-full md:w-full">
           <div className="py-4 text-2xl font-bold">Login</div>
           <div className="text-lightGray bg-red-600 rounded-lg px-3">
             {error}
