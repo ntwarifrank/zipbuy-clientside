@@ -1,0 +1,11 @@
+@media (max-width: 768px) {
+    .login-image{
+      display: none;
+    }
+    .login-form{
+        width: 100%;
+    }
+    .login-container{
+        width: 90%;
+    }
+}

@@ -6,7 +6,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import loginController from "../authenticationControlar";
-//import Cookies from "js-cookie";
+import "./page.css";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const Login = () => {
         { withCredentials: true }
       );
       if (response.status == 200) {
-        // Cookies.set("token", response.data.message, { expires: 1, httpOnly: true, }); 
+         Cookies.set("token", response.data.message, { expires: 1, httpOnly: true, }); 
          router.push("/buyingpage");
          setLoading(false);
       }
