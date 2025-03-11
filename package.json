@@ -17,6 +17,7 @@
     "@stripe/stripe-js": "^5.7.0",
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.7.9",
+    "critters": "^0.0.23",
     "framer-motion": "^12.4.4",
     "js-cookie": "^3.0.5",
     "js-cookies": "^1.0.4",
