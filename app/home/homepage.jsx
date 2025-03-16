@@ -146,7 +146,7 @@ const Homepage = () => {
       </div>
 
       <div className="w-[90%] mx-auto my-16 mid">
-        <div className="h-[430px] w-[full] flex flex-row">
+        <div className="form-container-big h-[430px] w-[full] flex flex-row">
           <div className="form-aside w-[50%] h-full bg-darkGray text-white py-24 rounded-l-lg">
             <div className="form-text px-10 text-5xl text-center font-bold">
               Register Now In February And Get 50% Discount For First Week
@@ -212,7 +212,7 @@ const Homepage = () => {
         </div>
       </div>
 
-      <div className="w-[90%] mx-auto flex flex-row py-[50px] px-[40px] bg-orange-200">
+      <div className="large-div-main w-[90%] mx-auto flex flex-row py-[50px] px-[40px] bg-orange-200">
         <div className="large-main w-[50%]">
           <p className="w-full font-bold text-4xl">
             Explore millions of offerings tailored to your business needs

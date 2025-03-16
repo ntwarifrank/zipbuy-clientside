@@ -41,24 +41,34 @@ label{
         flex-direction: column;
     }
     .form-aside{
-        width: 30%;
+        width: 90%;
         padding-left: 4px;
-        padding-top: 50px;
-        
+        padding-top: 50px;  
+        margin: 0 auto; 
     }
     .form{
-        width: 70%;
+        width: 90%;
+        margin: 0 auto;
     }
     .form-text{
-        font-size: 25px;
+        font-size: 30px;
         padding: 4px 0px;
     }
     .large-main p{
         font-size: 30px;
+       
     }
     .main-large{
         display: flex;
         flex-direction: column;
+    }
+    .form-container-big {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 100px;
+        height: fit-content;
+        padding: 10px 0px;
+
     }
     .main-div{
       width: 100%;
