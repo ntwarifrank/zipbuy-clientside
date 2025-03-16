@@ -114,7 +114,10 @@ useEffect(() => {
                   </div>
                   <div className="py-1 px-3 h-[40%] flex flex-col gap-1">
                     <div className="text-md h-[55%] font-semibold text-gray-900 flex flex-wrap">
-                      {product.productName}
+                    {product.productName.length > 50
+                          ? product.productName.slice(0, 55) + "..."
+                          : product.productName
+                    }
                     </div>
                     <div className="text-lg font-semibold text-gray-700 h-[45%] flex flex-row justify-between">
                       <div className="text-xl font-bold">
