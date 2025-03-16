@@ -70,7 +70,10 @@ async function handleLogout() {
      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/search`, { searched });
      if (res.status == 200) {
        setSearch(res.data.products);
-       router.push("/buyingpage")
+       if(userData){
+        router.push("/buyingpage")
+       }
+      
      }
      
    } catch (error) {
