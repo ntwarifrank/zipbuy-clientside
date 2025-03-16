@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import "@/app/globals.css";
+import "./page.css"
 
 const Register = () => {
   const router = useRouter();

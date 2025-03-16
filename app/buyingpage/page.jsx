@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import userDataStore from "../userDataController.js";
 import searchStore from "../handlesearch";
 import "@/app/globals.css";
+import "./page.css"
 
 const BuyingPage = () => {
    const router = useRouter();

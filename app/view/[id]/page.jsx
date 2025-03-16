@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { useCartStore } from "@/app/cartController";
 import "@/app/globals.css";
+import "./page.css"
 
 const View = () => {
   const [productData, setProductData] = useState({});

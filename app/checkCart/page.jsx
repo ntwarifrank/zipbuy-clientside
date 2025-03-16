@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "@/app/globals.css";
+import "./page.css"
 
 const CheckCart = () => {
   const { cartIds, setCartIds, removeProduct, removeLastId } = useCartStore();

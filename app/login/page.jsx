@@ -8,6 +8,7 @@ import Link from "next/link";
 import loginController from "../authenticationControlar";
 import Cookies from "js-cookie";
 import "@/app/globals.css";
+import "./page.css"
 
 const Login = () => {
   const router = useRouter();

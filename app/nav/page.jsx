@@ -15,6 +15,7 @@ import userDataStore from "../userDataController";
 import axios from "axios";
 import searchStore from "../handlesearch.js"
 import "@/app/globals.css";
+import "./page.css"
 
 const Nav = () => {
   const router = useRouter();
