@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import userDataStore from "../userDataController.js";
 import searchStore from "../handlesearch";
+import "@/app/globals.css";
 
 const BuyingPage = () => {
    const router = useRouter();

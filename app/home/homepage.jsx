@@ -7,6 +7,7 @@ import "./homepage.css";
 import Footer from "../footer/page";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import "@/app/globals.css";
 
 const Homepage = () => {
 

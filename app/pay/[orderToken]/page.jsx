@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement } from "@stripe/react-stripe-js";
 import { useStripe } from "@stripe/react-stripe-js";
 import { useElements } from "@stripe/react-stripe-js";
+import "@/app/globals.css";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
