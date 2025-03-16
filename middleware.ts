@@ -1,4 +1,4 @@
-
+/*
 import { NextRequest, NextResponse } from "next/server";
 
 export default function loggedin(req: NextRequest) {
@@ -21,3 +21,5 @@ export default function loggedin(req: NextRequest) {
 export const config = {
   matcher: ["/buyingpage", "/login", "/", "/register", "/checkCart"],
 };
+
+*/
