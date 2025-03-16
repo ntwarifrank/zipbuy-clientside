@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Footer from "../footer/page";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faArrowRight, faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import "./page.css"
 import axios from "axios";
 import { useState , useEffect} from "react";
 import { useCartStore } from "../cartController";

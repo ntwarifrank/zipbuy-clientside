@@ -31,3 +31,143 @@ button:hover {
   background-color: var(--dark-gray);
   color: var(--alibaba-orange); /* Fixed here */
 }
+
+@media (max-width: 768px) {
+  .card {
+    width: 90%;
+  }
+  .large{
+    padding-top: 350px;
+    width: 100%;
+    text-align: center;
+  }
+  .card-container{
+    padding-left: 30px;
+  }
+  .increase-banner{
+    margin-left: 80%;
+  }
+  .div-cart{
+    width: 100px;
+    font-size: 8px;
+    left: 90%;
+    top: 70%;
+  }
+  .div-discount{
+     width: 100px;
+    font-size: 15px;
+    left: 90%;
+    top: 10%;
+  }
+  .div-price{
+    width: 100px;
+    font-size: 15px;
+    left: 90%;
+    top: 40%;
+  }
+  
+}
+@media (max-width: 768px) {
+  .cart-data{
+      padding-top: 350px;
+  }
+}
+@media (max-width: 768px) {
+  .login-image{
+    display: none;
+  }
+  .login-form{
+      width: 100%;
+  }
+  .login-container{
+      width: 90%;
+  }
+}
+.container{
+  background-color: rgb(14, 14, 36);
+}
+.nav{
+  z-index: 1000;
+}
+@media (max-width: 768px) {
+.nav {
+  flex-direction: column;
+}
+.select-div{
+  width: 20%;
+  margin-left: 0px;
+}
+.search-container {
+  margin-left: 0px;
+  width: 90%;
+  margin-top: 6px;
+}
+.search{
+  width: 100%;
+}
+.search-div{
+  width: 70%;
+}
+.search-icon-div{
+  width: 10%;
+}
+.flag{
+  display: none;
+}
+.prod{
+  top: 220px;
+  right: 77%;
+}
+.profile{
+  width: 40%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+.cart{
+  margin-left: 0px;
+}
+
+}
+
+@media (max-width: 768px) {
+  .register-image{
+    display: none;
+  }
+  .register-form{
+      width: 100%;
+  }
+  .register-container{
+      width: 90%;
+  }
+}
+input{
+  width: 100%;
+  box-shadow: 0px 0px 3px gray;
+  padding: 4px;
+  text-indent: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  color: black;
+  outline: none;
+}
+label{
+  font-weight: 500;
+  color: rgb(215, 212, 212);
+}
+.mid{
+  box-shadow: 0px 0px 10px rgb(68, 66, 66);
+}
+.form{
+  background-color: rgb(29, 29, 66);
+}
+.div-sm{
+   box-shadow: 0px 0px 2px rgb(252, 250, 250);
+
+}
+.view-product{
+  width: 98%;
+  display: grid;
+  grid-template-columns: 10% 50% 40%;
+  gap: 10px;
+}

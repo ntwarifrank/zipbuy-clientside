@@ -1,6 +1,5 @@
 "use client";
 import car from "../../../public/car.jpg";
-import "./page.css";
 import Image from "next/image";
 import axios from "axios";
 import { useEffect, useState } from "react";

@@ -6,8 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import loginController from "../authenticationControlar";
-import "./page.css";
-import Cookies from "js-cookies";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const router = useRouter();
@@ -37,6 +36,7 @@ const Login = () => {
          setLoading(false);
       }
     } catch (error) {
+      console.log(error)
       setError(error.response.data.message);
       setLoading(false);
     }

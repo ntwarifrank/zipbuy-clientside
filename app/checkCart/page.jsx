@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import Nav from "../nav/page";
 import Footer from "../footer/page";
 import { useCartStore } from "../cartController";
-import "./page.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
