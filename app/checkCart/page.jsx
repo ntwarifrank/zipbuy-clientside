@@ -1,6 +1,5 @@
 "use client";
 import { useMemo, useEffect, useState } from "react";
-import Footer from "../footer/page";
 import { useCartStore } from "../cartController";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -367,7 +366,6 @@ const CheckCart = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     </Layout>
   );
