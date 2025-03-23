@@ -1,39 +1,45 @@
 "use client";
-import { useMemo } from "react";
-import Nav from "../nav/page";
+import { useMemo, useEffect, useState } from "react";
 import Footer from "../footer/page";
 import { useCartStore } from "../cartController";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import "@/app/globals.css";
-import "./page.css"
+import "./page.css";
+import Layout from "../layout/page";
+import useToggleModeStore from "../modeController";
+import { ShoppingCart } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Link from "next/link";
 
 const CheckCart = () => {
   const { cartIds, setCartIds, removeProduct, removeLastId } = useCartStore();
   const router = useRouter();
   const [products, setProducts] = useState([]);
-  const [orderErrorMessage, setOrderErrorMessage] = useState([]);
+  const [orderErrorMessage, setOrderErrorMessage] = useState("");
+  const { mode } = useToggleModeStore();
+  const [clientSecret, setClientSecret] = useState("");
 
   const [fullName, setFullName] = useState("");
   const [city, setCity] = useState("");
   const [email, setEmail] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [streetAddress, setstreetAddress] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("Rwanda");
+  const [orderSubmitted, setOrderSubmitted] = useState(false)
 
-const totalPrice = useMemo(() => {
-  return products.reduce((total, product) => {
-    const quantity = cartIds.filter((id) => id === product._id).length;
-    const price =
-      (product.productPrice -
-        (product.productPrice / 100) * product.productDiscount) *
-      quantity;
-    return total + price;
-  }, 0);
-}, [products, cartIds]);
-
+  const totalPrice = useMemo(() => {
+    return products.reduce((total, product) => {
+      const quantity = cartIds.filter((id) => id === product._id).length;
+      const price =
+        (product.productPrice -
+          (product.productPrice / 100) * product.productDiscount) *
+        quantity;
+      return total + price;
+    }, 0);
+  }, [products, cartIds]);
 
   const fetchProductsData = async () => {
     if (cartIds.length === 0) {
@@ -58,262 +64,312 @@ const totalPrice = useMemo(() => {
     fetchProductsData();
   }, [cartIds]);
 
-
   const increaseQuantity = (productId) => {
-        setCartIds(productId);
-        fetchProductsData();
+    setCartIds(productId);
+    fetchProductsData();
   };
+
   const decreaseQuantity = (productId) => {
-       removeLastId(productId)
+    removeLastId(productId);
   };
+
   const removeItem = (productId) => {
     removeProduct(productId);
   };
 
-async function handleOrder(e){
-  e.preventDefault();
-   try {
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-   const orderToken = Math.floor(100000 + Math.random() * 900000 * Math.random() * 20000).toString();
-   
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/placeorder`, {
-      email,
-      fullName,
-      city,
-      postalCode,
-      streetAddress,
-      country,
-      orderToken,
-      totalAmount:totalPrice.toFixed(2),
-      cartProducts:products
-    });
+  const fetchPaymentIntent = async () => {
+    const currency = "usd";
+    const amountInCents = Math.round(totalPrice * 100);
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-intent`,
+        { amount: amountInCents, currency }
+      );
+      setClientSecret(response.data.clientSecret);
+    } catch (error) {
+      console.error("Error fetching payment intent:", error);
+    }
+  };
 
-    if (response.status == 200) {
-      const amount = totalPrice.toFixed(2)
-      router.push(`/pay/${orderToken}?amount=${amount}`);
+  useEffect(() => {
+    if (totalPrice) {
+      fetchPaymentIntent();
     }
-    else{
-      setOrderErrorMessage(response.response?.data?.message);
-    }
-   } catch (error) {
-    console.log(error)
+  }, [totalPrice]);
+
+  const handleOrder = async (e) => {
+    e.preventDefault();
+    try {
+      const orderToken = Math.floor(100000 + Math.random() * 900000 * Math.random() * 20000).toString();
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/placeorder`, {
+        email,
+        fullName,
+        city,
+        postalCode,
+        streetAddress,
+        country,
+        orderToken,
+        totalAmount: totalPrice.toFixed(2),
+        cartProducts: products
+      });
+
+      if (response.status === 200) {
+        setOrderSubmitted(true);
+      } else {
+        setOrderErrorMessage(response.response?.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
       setOrderErrorMessage(error.response?.data?.message);
-   }
-}
+    }
+  };
+
+  const PaymentForm = () => {
+    const stripe = useStripe();
+    const elements = useElements();
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      if (!stripe || !elements) return;
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/payment-success`,
+        },
+      });
+
+      if (error) {
+        console.error("Payment error:", error.message);
+      } else {
+        console.log("Payment successful");
+      }
+    };
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <PaymentElement />
+        <button type="submit" className="my-4 px-5 py-2 rounded-lg bg-darkGray text-white">
+          Submit Payment
+        </button>
+      </form>
+    );
+  };
 
   return (
-    <div>
-      <Nav />
-      <div className="cart-data w-[94%] gap-2 mx-auto pt-[80px] mb-3 min-h-[90vh] flex flex-wrap">
-        <div className="w-[63%] shadow-lg p-2">
-          <table>
-            <thead>
-              <tr>
-                <th className="py-1 px-3 w-[40%] text-left">Product</th>
-                <th className="py-1 px-3 w-[10%] text-left">Price</th>
-                <th className="py-1 px-3 w-[30%] text-left">Quantity</th>
-                <th className="py-1 px-3 w-[10%] text-left">Subtotal</th>
-                <th className="py-1 px-3 w-[10%] text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
+    <Layout>
+      <div>
+        <div className="cart-data w-[94%] text-gray-400 gap-2 mx-auto mb-3 min-h-[90vh] flex flex-wrap">
+          <div className="w-[63%] shadow-lg p-2">
+            <div className="flex flex-row">
+              <div className="bg-gray-500 text-white rounded-full p-2 w-8 h-8 text-center">
+                <ShoppingCart size={18} />
+              </div>
+              <div className={`px-3 pt-2 font-semibold ${mode?"text-black":"text-gray-400"}`}>Items <span>{cartIds.length}</span></div>
+            </div>
+            <div className="flex flex-col gap-3">
               {products.length > 0 &&
                 products.map((product) => (
-                  <tr
+                  <div
                     key={product._id}
-                    className="shadow-lg shadow-gray-200 mb-2"
+                    className={`shadow-lg shadow-gray-200 mb-2 ${mode ? "" : "shadow-none"} border-b-2 border-gray-500 pb-2 flex flex-row h-[110px]`}
                   >
-                    <td className="py-1 px-3 flex">
-                      <div className="w-[30%] h-[60px]">
-                        <Image
-                          src={product.productImages[0] || "/placeholder.jpg"}
-                          className="h-full w-full object-cover"
-                          width={100}
-                          height={100}
-                          alt={product.productName}
-                        />
-                      </div>
-                      <div className="w-[70%] px-3 font-semibold">
+                    <div className="w-[30%] px-3 py-2">
+                      <Link href={`/view/${product._id}`}>
+                        <div className={`p-1 h-[90%] w-[80%] ${mode ? "bg-cardBackground" : "bg-gray-600"}`}>
+                          <Image
+                            src={product.productImages[0] || "/placeholder.jpg"}
+                            className="h-full w-full object-cover"
+                            width={100}
+                            height={100}
+                            alt={product.productName}
+                          />
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="w-[50%] px-3 font-semibold flex flex-col justify-between h-full">
+                      <div className="text-sm">
                         <p>
-                          {product.productName.length > 30
-                            ? product.productName.slice(0, 30) + "..."
+                          {product.productName.length > 70
+                            ? product.productName.slice(0, 70) + "..."
                             : product.productName}
                         </p>
                       </div>
-                    </td>
-                    <td className="py-1 px-3">
-                      $
-                      {(
-                        product.productPrice -
-                        (product.productPrice / 100) * product.productDiscount
-                      ).toFixed(2)}
-                    </td>
-                    <td className="py-1 px-3 flex">
-                      <button
-                        onClick={() => decreaseQuantity(product._id)}
-                        className="py-1 px-4 hover:bg-orange-600 hover:text-white"
-                      >
-                        -
-                      </button>
-                      <div className="py-1 px-5">
-                        {cartIds.filter((item) => item === product._id).length}
+                      <div className="relative mx-auto flex flex-row w-full">
+                        <button
+                          onClick={() => decreaseQuantity(product._id)}
+                          className="px-4 hover:bg-orange-600 hover:text-white"
+                        >
+                          -
+                        </button>
+                        <div className="py-1 px-4">
+                          {cartIds.filter((item) => item === product._id).length}
+                        </div>
+                        <button
+                          onClick={() => increaseQuantity(product._id)}
+                          className="px-4 hover:bg-orange-600 hover:text-white"
+                        >
+                          +
+                        </button>
+                        <div className="absolute top-0 right-20 text-sm text-gray-500 ml-10">
+                          <span>
+                            x $
+                            {(
+                              product.productPrice -
+                              (product.productPrice / 100) * product.productDiscount
+                            ).toFixed(2)}
+                          </span>
+                        </div>
                       </div>
-                      <button
-                        onClick={() => increaseQuantity(product._id)}
-                        className="py-1 px-4 hover:bg-orange-600 hover:text-white"
-                      >
-                        +
-                      </button>
-                    </td>
-                    <td className="py-1 px-3">
-                      <span className="font-bold">
-                        $
-                        {(
-                          (product.productPrice -
-                            (product.productPrice / 100) *
+                    </div>
+                    <div className="w-[20%] pt-8 flex flex-col gap-3">
+                      <div>
+                        <button
+                          onClick={() => removeItem(product._id)}
+                          className="py-1 px-3 bg-red-600 text-white"
+                        >
+                          Drop
+                        </button>
+                      </div>
+                      <div>
+                        <span className="font-bold">
+                          $
+                          {(
+                            (product.productPrice -
+                              (product.productPrice / 100) *
                               product.productDiscount) *
-                          cartIds.filter((item) => item === product._id).length
-                        ).toFixed(2)}
-                      </span>
-                    </td>
-                    <td className="py-1 px-3">
-                      <button
-                        onClick={() => removeItem(product._id)}
-                        className="py-1 px-3 bg-red-600 text-white"
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
+                            cartIds.filter((item) => item === product._id).length
+                          ).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 ))}
-            </tbody>
-          </table>
-          {products.length == 0 && (
-            <div className="text-center text-2xl font-bold mt-6">
-              <p>Your Cart Is Empty</p>
             </div>
-          )}
-          {products.length > 0 && (
-            <div className="ml-[500px] w-[30%] bg-darkGray py-2 px-3 mt-5 text-white">
-              Total:
-              <span className="font-bold text-xl">
-                $ {totalPrice.toFixed(2)}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <div className="w-[35%] shadow-lg p-2 rounded-b-lg">
-          <div className="bg-darkGray text-white p-2 font-bold text-2xl">
-            Cart Total
-          </div>
-          <div className="font-bold py-2 px-1">
-            Total: $<span>{totalPrice.toFixed(2)}</span>
-          </div>
-          <div className="bg-darkGray text-white p-2 font-bold text-2xl">
-            Order Information
-          </div>
-          {products.length == 0 && (
-            <div className="text-center text-xl font-bold mt-20">
-              Not Needed
-            </div>
-          )}
-          {products.length > 0 && (
-            <form onSubmit={handleOrder}>
-              {orderErrorMessage && (
-                <div className="text-red-500">{orderErrorMessage}</div>
-              )}
-              <div className="grid grid-cols-2 gap-2 px-2 pt-3">
-                <input
-                  type="text"
-                  placeholder="FullName Name"
-                  className="rounded-lg indent-2 p-3 shadow-lg shadow-gray-300 outline-none border-none col-span-2"
-                  value={fullName}
-                  onChange={(e) => {
-                    setFullName(e.target.value);
-                  }}
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="rounded-lg indent-2 p-3 shadow-lg shadow-gray-300 outline-none border-none col-span-2"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="City"
-                  className="rounded-lg indent-2 p-3 shadow-lg shadow-gray-300 outline-none border-none "
-                  value={city}
-                  onChange={(e) => {
-                    setCity(e.target.value);
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Postal code"
-                  className="rounded-lg indent-2 p-3 shadow-lg shadow-gray-300 outline-none border-none"
-                  value={postalCode}
-                  onChange={(e) => {
-                    setPostalCode(e.target.value);
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Street Address"
-                  className="rounded-lg indent-2 p-3 shadow-lg shadow-gray-300 outline-none border-none"
-                  value={streetAddress}
-                  onChange={(e) => {
-                    setstreetAddress(e.target.value);
-                  }}
-                />
-                <select
-                  value={country}
-                  onChange={(e) => {
-                    setCountry(e.target.value);
-                  }}
-                  className="rounded-lg indent-2 p-1 shadow-lg shadow-gray-300 outline-none  border-none"
-                >
-                  <option value="Rwanda" className="text-gray-400">
-                    Rwanda
-                  </option>
-                  <option value="Tanzania" className="text-gray-400">
-                    Tanzania
-                  </option>
-                  <option value="Uganda" className="text-gray-400">
-                    Uganda
-                  </option>
-                  <option value="Drccongo" className="text-gray-400">
-                    DRC Congo
-                  </option>
-                  <option value="Burundi" className="text-gray-400">
-                    Burundi
-                  </option>
-                  <option value="Kenya" className="text-gray-400">
-                    Kenya
-                  </option>
-                  <option value="SouthSudan" className="text-gray-400">
-                    South Sudan
-                  </option>
-                </select>
+            {products.length === 0 && (
+              <div className="text-center text-2xl font-bold mt-6">
+                <p>Your Cart Is Empty</p>
               </div>
-
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="w-[50%] bg-darkGray mt-5 py-3 px-5 text-white font-bold mx-auto text-center"
-                >
-                  CheckOut
-                </button>
+            )}
+            {products.length > 0 && (
+              <div className="float-right w-[30%] bg-darkGray py-2 px-3 mt-5">
+                Total:
+                <span className="font-bold text-xl">
+                  $ {totalPrice.toFixed(2)}
+                </span>
               </div>
-            </form>
-          )}
+            )}
+          </div>
+
+          <div className={`w-[35%] shadow-lg p-2 rounded-b-lg  ${mode ?"text-black": "text-gray-400"}`}>
+            <div className="p-2 text-xl">Billing Details</div>
+            {products.length === 0 && (
+              <div className="text-center text-xl font-bold mt-20">
+                Not Needed
+              </div>
+            )}
+
+            {products.length > 0 && (
+              <form onSubmit={handleOrder}>
+                {orderErrorMessage && (
+                  <div className="">{orderErrorMessage}</div>
+                )}
+                <div className="grid grid-cols-2 gap-2 px-2 pt-3">
+                  <input
+                    type="text"
+                    placeholder="FullName Name"
+                    className={`rounded-lg col-span-2 indent-2 p-2 ${mode ?"shadow-lg shadow-gray-300 ":"shadow-lg shadow-gray-800 bg-gray-100 text-gray-900 "} outline-none border-none`}
+                    value={fullName}
+                    onChange={(e) => {
+                      setFullName(e.target.value);
+                    }}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className={`rounded-lg col-span-2 indent-2 p-2 ${mode ?"shadow-lg shadow-gray-300 ":"shadow-lg shadow-gray-800 bg-gray-100 text-gray-900 "} outline-none border-none`}
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="City"
+                    className={`rounded-lg indent-2 p-2 ${mode ?"shadow-lg shadow-gray-300 ":"shadow-lg shadow-gray-800 bg-gray-100 text-gray-900 "} outline-none border-none`}
+                    value={city}
+                    onChange={(e) => {
+                      setCity(e.target.value);
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Postal code"
+                    className={`rounded-lg indent-2 p-2 ${mode ?"shadow-lg shadow-gray-300 ":"shadow-lg shadow-gray-800 bg-gray-100 text-gray-900 "} outline-none border-none`}
+                    value={postalCode}
+                    onChange={(e) => {
+                      setPostalCode(e.target.value);
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Street Address"
+                    className={`rounded-lg indent-2 p-2 ${mode ?"shadow-lg shadow-gray-300 ":"shadow-lg shadow-gray-800 bg-gray-100 text-gray-900 "} outline-none border-none`}
+                    value={streetAddress}
+                    onChange={(e) => {
+                      setStreetAddress(e.target.value);
+                    }}
+                  />
+                  <select
+                    value={country}
+                    onChange={(e) => {
+                      setCountry(e.target.value);
+                    }}
+                    className={`rounded-lg indent-2 p-2 ${mode ?"shadow-lg shadow-gray-300 ":"shadow-lg shadow-gray-800 bg-gray-100 text-gray-900 "} outline-none border-none`}
+                  >
+                    <option value="Rwanda">Rwanda</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Drccongo">DRC Congo</option>
+                    <option value="Burundi">Burundi</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="SouthSudan">South Sudan</option>
+                  </select>
+                </div>
+
+                <div className="text-center">
+                  <button
+                    type="submit"
+                    className="w-[60%] bg-darkGray mt-5 py-2 px-5 text-white font-bold mx-auto text-center"
+                  >
+                    {orderSubmitted ? "Checked Then Pay": "CheckOut"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div>
+              {
+                cartIds.length > 0 && (
+                  <div className="w-[90%] shadow-lg p-2">
+                      <h2 className="p-2 text-xl">Payment Method</h2>
+                      {clientSecret && (
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                          <PaymentForm />
+                        </Elements>
+                      )}
+                </div>
+                )
+              }
+            </div>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 

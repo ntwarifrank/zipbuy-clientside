@@ -9,12 +9,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        alibabaOrange: "#ff6a00",
+        alibabaOrange: "#FFC831",
         darkGray: "#333333",
         lightGray: "#f5f5f5",
-        white: "#ffffff",
+        text: "#ff6a00",
+        dashboaldColor:"#FFFFFF",
+        darkMode:"#161c24",
+        darkText:"#919eab",
+        cardBackground:"#919EAB26",
+        mainColor:"#E5E7EB",
+        viewCoverColor:"#C1C0E514",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 } satisfies Config;

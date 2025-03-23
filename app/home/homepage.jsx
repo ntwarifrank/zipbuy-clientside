@@ -8,6 +8,7 @@ import Footer from "../footer/page";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import "@/app/globals.css";
+import Link from "next/link";
 
 const Homepage = () => {
 
@@ -50,6 +51,11 @@ const Homepage = () => {
   return (
     <div className="w-[100%] mx-auto bg-lightGray">
       <div>
+        <div className="absolute right-5 gap-3 flex flex-row top-3">
+          <Link href={"/login"} className="px-5 py-2 rounded-lg bg-alibabaOrange">Login</Link>
+          <Link href={"/register"} className="px-5 py-2 rounded-lg bg-alibabaOrange">Join</Link>
+
+        </div>
         <div className="w-[100%] h-[600px]">
           <div className=" absolute top-[170px] px-10 text-white">
             <p className="word1 text-2xl font-bold mb-4">

@@ -1,10 +1,19 @@
 import { create } from "zustand";
 
-const searchStore = create((set) => ({
-     search:[],
+const useSearchStore = create((set) => ({
+     search:"",
      setSearch: (content) => {
-        set({search:content})
+        set({search: content})
      }
 }))
 
-export default searchStore
+export default useSearchStore
+
+const useSearchedStore = create((set) => ({
+   searchedProduct:[],
+   setSearchedProduct: (content) => {
+      set({searchedProduct: content});
+   }
+}))
+
+export  {useSearchedStore}
