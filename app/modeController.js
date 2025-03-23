@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { useEffect } from "react";
 
 const useToggleModeStore = create((set) => ({
   mode: typeof window !== "undefined" ? JSON.parse(localStorage.getItem("mode")) ?? true : true,
