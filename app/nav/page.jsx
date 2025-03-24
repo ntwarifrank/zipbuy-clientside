@@ -61,7 +61,7 @@ const Nav = () => {
 
   return (
     <div className=" w-[100%] nav">
-      <div className="nav flex flex-row justify-between p-2 text-white">
+      <div className="nav flex flex-row justify-between px-2 text-white">
           <div className="relative search-container flex flex-row w-[40%] px-3">
             <div className=" search-div mt-[11px] w-full bg-white h-[35px] rounded-3xl overflow-hidden">
               <input
