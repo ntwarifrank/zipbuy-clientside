@@ -43,7 +43,6 @@ const BuyingPage = () => {
     fetchProduct();
   }, []);
 
-  // Handlers
   const addToCart = (id) => setCartIds(id);
   const handleCategorySearch = (category) => {
     setSearch(category);
@@ -54,7 +53,6 @@ const BuyingPage = () => {
     setSearch('');
   };
 
-  // Helper Components
   const CategoryButton = ({ category, isActive }) => (
     <div 
       onClick={() => handleCategorySearch(category)}
@@ -133,7 +131,6 @@ const BuyingPage = () => {
     </div>
   );
 
-  // Render
   return (
     <Layout>
       <div>
