@@ -49,7 +49,7 @@ const productListItem = ["Clothes","Bogs","Food", "Shoes", "Accessories"];
                                 }
                               </ul>
                             </li>
-                            <li className="flex flex-row  gap-2 hover:text-alibabaOrange" ><Package2Icon size={24} /><span className={dashboardState ? "hidden":"block"}>Popilar Products</span></li>
+                            <li className="flex flex-row  gap-2 hover:text-alibabaOrange" ><Package2Icon size={24} /><span className={dashboardState ? "hidden":"block"}>Popular Products</span></li>
                             <li className="flex flex-row  gap-2 hover:text-alibabaOrange" ><Users2 size={24} /><span className={dashboardState ? "hidden":"block"}> Top Authors </span></li>
                             <li className="flex flex-row  gap-2 hover:text-alibabaOrange"  ><BarChart3Icon size={24} /><span className={dashboardState ? "hidden":"block"}> Feed </span></li>
                           </ul>
