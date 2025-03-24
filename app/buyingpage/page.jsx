@@ -54,6 +54,18 @@ const BuyingPage = () => {
       <div className="w-full">
         {Array.isArray(searchedProduct) && searchedProduct.length > 0 && search ? (
           <div className="card-container flex flex-row flex-wrap gap-6 px-16 pb-32">
+            <div className="w-full mb-2 py-2">
+                <div className="flex flex-row gap-3">
+                  {categoryAvailable.map((category, index) =>(
+                    <div 
+                     key={index}
+                     onClick={() => handleCategorySearch(category)}  
+                      className={`${mode ? "": "bg-gray-800 text-gray-400"} px-4 py-1 rounded-full max-w-fit text-sm cursor-pointer`}>
+                        <p>{category}</p>
+                    </div>  
+                  ))}       
+                </div>
+              </div>
             {searchedProduct.map((product, index) =>
               product._id == 0 ? (
                 <div key={index} className="px-20 w-full">

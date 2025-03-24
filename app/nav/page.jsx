@@ -104,13 +104,15 @@ const Nav = () => {
                 </Link>
 
                 <div className="profile flex flex-row gap-1 mt-3">
-                  <div className="profile w-8 h-8">
-                    <Image
-                      src={noUser}
-                      alt="profile"
-                      className="rounded-full h-full w-full cursor-pointer object-cover"
-                    />
-                  </div>
+                  <Link href={"/profile"}>
+                    <div className="profile w-8 h-8">
+                      <Image
+                        src={noUser}
+                        alt="profile"
+                        className="rounded-full h-full w-full cursor-pointer object-cover"
+                      />
+                    </div>
+                  </Link>
                 </div>
          </div>
 
