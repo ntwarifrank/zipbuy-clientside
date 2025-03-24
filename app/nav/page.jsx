@@ -87,8 +87,8 @@ const Nav = () => {
           
 
         
-         <div className="px-3 flex flex-row gap-5">
-              <div className="py-2">
+         <div className="px-3 flex flex-row gap-5 pt-2">
+              <div className="py-2 mt-2">
                 {mode? <SunIcon size={24} onClick={changeMode} className="text-gray-500 "/> : <MoonIcon size={24} onClick={changeMode} className="text-gray-500 "/>}
               
               </div>
