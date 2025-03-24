@@ -35,8 +35,8 @@ const productListItem = ["Clothes","Bogs","Food", "Shoes", "Accessories"];
                         <div>
                           <ul className="px-3 py-6 flex flex-col gap-3 font-semibold">
                             <li className="flex flex-row gap-2 font-bold hover:text-alibabaOrange" ><HomeIcon size={24}/><span className={dashboardState ? "hidden":"block"}>Discover </span></li>
-                            <li className={`${dashboardState ? "h-0":""} px-4 h-20 overflow-y-scroll scrollbar-none`}>
-                              <ul className={dashboardState ? "hidden": "border-l-2 flex flex-col gap-1 border-gray-500 overflow-y-scroll scrollbar-track-transparent scrollbar-thin scrollbar-hover:bg-gray-500  scrollbar-thumb-gray-400"}>
+                            <li className={`${dashboardState ? "hidden":""} px-4 h-20 overflow-y-scroll scrollbar-none`}>
+                              <ul className={dashboardState ? "": "border-l-2 flex flex-col gap-1 border-gray-500 overflow-y-scroll scrollbar-track-transparent scrollbar-thin scrollbar-hover:bg-gray-500  scrollbar-thumb-gray-400"}>
                                 {
                                 productListItem.map((listItem, index) => (
                                   <li
@@ -65,7 +65,7 @@ const productListItem = ["Clothes","Bogs","Food", "Shoes", "Accessories"];
                             <li><Link href="#" className="hover:underline">Privacy</Link></li>
                             <li><Link href="#" className="hover:underline">Help</Link></li>
                           </ul>
-                          <div className={`text-sm ${dashboardState?"text-[10px]":""}`}>
+                          <div className={`text-sm ${dashboardState?"text-[7px]":""}`}>
                             <p>Copyright 2025 By Nfsoft</p>
                           </div>
                         </div>
