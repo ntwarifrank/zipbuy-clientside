@@ -39,8 +39,8 @@ const Nav = () => {
         const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/search`, { search });
           if (res.status == 200) {
              setSearchedProduct(res.data.products); 
-          }
-          router.push("/buyingpage")
+            
+          }      
    } catch (error) {
     console.log(error);
    }

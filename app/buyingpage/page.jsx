@@ -15,6 +15,7 @@ import { useToggleDashboardStateStore } from '../modeController';
 import Layout from '../layout/page';
 import '@/app/globals.css';
 import './page.css';
+import Nav from '../nav/page';
 
 const BuyingPage = () => {
   const router = useRouter();
@@ -134,6 +135,7 @@ const BuyingPage = () => {
   return (
     <Layout>
       <div className='px-2'>
+      <Nav/>
         {Array.isArray(searchedProduct) && searchedProduct.length > 0 && search ? (
           <div className="w-full">
             <div className="ml-3 py-3">

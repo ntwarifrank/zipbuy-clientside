@@ -90,7 +90,11 @@ const View = () => {
 
   return (
     <Layout>
-      <div className="w-[100%]">
+      <div className="w-[100%] pt-10">
+      <div className="w-[80%] px-10 pb-1 font-bold">
+                  Title:{" "}
+                  {productData?.productName}
+                </div>
         <div className="view-product w-[100%] px-5 flex flex-row">
           <div className="w-[70%] flex flex-col gap-20 ">
             <div className="flex flex-row">
@@ -119,12 +123,7 @@ const View = () => {
               </div>
 
               <div className="rounded-lg p-4 h-[440px] w-[75%]">
-                <div className="h-[7%] pb-1 font-bold">
-                  Title:{" "}
-                  {productData?.productName?.length > 20
-                    ? productData.productName.slice(0, 20)
-                    : productData.productName}
-                </div>
+                
                 <div className="w-[100%] bg-viewCoverColor h-[300px] relative">
                   <div className="absolute top-[130px] font-bold">
                     <ChevronLeft

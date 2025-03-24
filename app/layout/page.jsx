@@ -2,7 +2,6 @@
 import {BarChart3Icon,Settings,  HelpCircle,Users2, Package2Icon,HomeIcon, BarChart4Icon}from "lucide-react"
 import useToggleModeStore from "../modeController";
 import { useToggleDashboardStateStore } from "../modeController";
-import Nav from "../nav/page";
 import Link from "next/link";
 import useSearchStore from "../handlesearch";
 
@@ -73,7 +72,7 @@ const productListItem = ["Clothes","Bogs","Food", "Shoes", "Accessories"];
 
             </div>
             <div className={dashboardState ? "w-[95%]" : "w-[85%]"}>
-              <Nav/>
+             
             {children}
             </div>
         </div>
