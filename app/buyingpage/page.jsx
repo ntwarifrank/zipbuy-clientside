@@ -61,7 +61,7 @@ const BuyingPage = () => {
             ? 'bg-black text-white' 
             : 'bg-gray-200 text-gray-800'
           : isActive
-            ? 'bg-gray-900 text-white'
+            ? 'bg-gray-200 text-gray-800'
             : 'bg-gray-800 text-gray-400'
       }`}
     >
@@ -133,7 +133,7 @@ const BuyingPage = () => {
 
   return (
     <Layout>
-      <div>
+      <div className='px-2'>
         {Array.isArray(searchedProduct) && searchedProduct.length > 0 && search ? (
           <div className="w-full">
             <div className="ml-3 py-3">
@@ -170,16 +170,16 @@ const BuyingPage = () => {
                 <p className="text-sm">Discover/ Products</p>
                 <p className="text-xl font-bold">Best Selling Specific products - Weekly Update</p>
               </div>
-              <div className="w-full pb-4 flex flex-row">
-                <div onClick={resetSearch} className={`${mode ? '' : 'bg-gray-800 text-gray-400'} py-1 rounded-full max-w-fit mr-3 text-sm cursor-pointer`}>
-                  <p className={search ? "px-4": `px-4 py-1 rounded-full max-w-fit text-sm cursor-pointer ${mode ? 'bg-black text-white' : 'bg-gray-200 text-gray-800'
-                 }`}>All</p>
-                </div>
-                <div className="flex flex-row gap-1">
-                  {categoryAvailable.map((category, index) => (
-                    <CategoryButton key={index} category={category} isActive={activeCategory === category}/>
-                  ))}
-                </div>
+             
+              <div className="w-full flex flex-row mt-0 py-2">
+                  <div onClick={resetSearch} className={search ? "px-4 mr-2": `px-4 py-1 mr-2 rounded-full max-w-fit text-sm cursor-pointer ${mode ? 'bg-black text-white' : 'bg-gray-200 text-gray-800'}`}>
+                     <p>All</p>
+                  </div>
+                  <div className="flex flex-row gap-1">
+                    {categoryAvailable.map((category, index) => (
+                      <CategoryButton key={index} category={category} isActive={activeCategory === category}/>
+                    ))}
+                  </div>
               </div>
 
               <div className="card-container flex flex-row flex-wrap gap-2 px-2">
