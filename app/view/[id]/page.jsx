@@ -92,8 +92,8 @@ const View = () => {
     <Layout>
       <div className="w-[100%] pt-10">
       <div className="w-[80%] px-10 pb-1 font-bold">
-                  Title:{" "}
-                  {productData?.productName}
+                  Discover/
+                  <span className="px-2">{productData?.productCategory}</span>
                 </div>
         <div className="view-product w-[100%] px-5 flex flex-row">
           <div className="w-[70%] flex flex-col gap-20 ">
@@ -249,60 +249,78 @@ const View = () => {
           </div>
 
           {/* Product Details Section */}
-          <div className={`w-[30%]  ${mode? "text-black": "text-gray-400"} rounded-lg shadow-lg shadow-gray-80 pt-2 pb-10 px-4`}>
-            <div className="py-2">
-              <p className="font-bold">Title</p>
+          <div className={`w-[30%]  ${mode? "text-gray-800": "text-gray-400"} pt-2 pb-10 px-4`}>
+            <div className="pt-2 font-bold text-lg capitalize">
               <p>{productData.productName}</p>
             </div>
-            <div className="bg-black rounded-md p-2">
-              <span>⭐⭐⭐⭐⭐</span>
-              <span className="ml-4">5 Reviews</span>
+            <div className="text-gray-500 ">
+              ZipBuy Online Shopping
             </div>
-            <div className="text-sm">
-              <p className="ml-1">
-                 Price Before:
-                <span>
-                  <del>{productData.productPrice}</del>
+            <div className="rounded-md py-2 flex flex-row gap-6">
+              <div> 
+                <span className="font-bold text-alibabaOrange">
+                  ${(
+                    productData.productPrice -
+                    (productData.productPrice / 100) * productData.productDiscount
+                  ).toFixed(2)}
                 </span>
-              </p>
+              </div>
+              <div className="text-gray-500">
+                <span>
+                    <del>${productData.productPrice}</del>
+                </span>
+              </div>
+
             </div>
-            <div className="py-2">
-              <span className=" ml-1">Price:</span>
-              <span className="">$</span>
-              <span className="ml-1">
-                {(
-                  productData.productPrice -
-                  (productData.productPrice / 100) * productData.productDiscount
-                ).toFixed(2)}
-              </span>
-            </div>
-            <div className="">
-              <p className="ml-1">
-                Discount: <span>{productData.productDiscount || 0}%</span>
-              </p>
+
+            <div className="flex flex-row justify-between">
+               <div>
+                  <p className="ml-1">
+                    15 sales ⭐<span>5.0(10)</span>
+                  </p>
+               </div>
+               <div className="">
+                  <div
+                    onClick={() => {
+                      addToCart(productData._id);
+                    }}
+                    className={`${mode ?"text-gray-500": "text-gray-400"}`}
+                  >
+                    <FontAwesomeIcon icon={faCartPlus} className="w-6 h-6 text-xl" />
+                  </div>
+               </div>
             </div>
             <div >
-              <h3 className="font-bold text-xl">Shipping Information:</h3>
+              <h3 className="font-bold text-xl py-1">Shipping Information:</h3>
               {productData.productShipping &&
               productData.productShipping.length > 0 ? (
                 <div className="">
                   <p>
-                    Weight:{" "}
+                    <span className="font-semibold pr-3">
+                      Weight:
+                    </span>
                     {productData.productShipping[0].weight + "g" ||
                       "Not specified"}
                   </p>
                   <p>
-                    Dimensions:{" "}
-                    {productData.productShipping[1].dimensions ||
+                    <span className="font-semibold pr-3">
+                      Dimensions:
+                    </span>
+                        {productData.productShipping[1].dimensions ||
                       "Not specified"}
                   </p>
                   <p>
-                    Shipping Cost:{" "}
+                    <span className="font-semibold pr-3">
+                      Shipping Cost:
+                    </span>
+                    
                     {productData.productShipping[2].shippingCost ||
                       "Not specified"}
                   </p>
                   <p>
-                    Estimated Delivery:{" "}
+                  <span className="font-semibold pr-3">
+                      Estimated Delivery:
+                    </span>
                     {productData.productShipping[3].estimatedDelivery ||
                       "Not specified"}
                   </p>
@@ -311,19 +329,9 @@ const View = () => {
                 <p>No shipping information available.</p>
               )}
             </div>
-            <div className="w-[33%] my-2">
-              <button
-                onClick={() => {
-                  addToCart(productData._id);
-                }}
-                className={`w-full text-sm px-2 flex flex-row py-1 font-bold rounded-lg duration-200 ${mode ?"text-black bg-mainColor shadow-md shadow-gray-500": "text-gray-400 bg-darkMode shadow-lg shadow-darkMode"}`}
-              >
-                <div>Add To</div>
-                <FontAwesomeIcon icon={faCartPlus} className="w-6 h-6 text-xl text-white" />
-              </button>
-            </div>
+            
             <div>
-              <p className="text-2xl font-bold">About Product</p>
+              <p className="text-2xl font-bold py-1">About Product</p>
               {productData.productDescription}
             </div>
           </div>
