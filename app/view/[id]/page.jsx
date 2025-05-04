@@ -5,27 +5,27 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import useCartStore from "../../store/cartController"
+import { faCartPlus, faStar } from "@fortawesome/free-solid-svg-icons";
+import useCartStore from "../../store/cartController";
 import "@/app/globals.css";
 import "./page.css";
 import Layout from "@/app/layout/page";
-import useToggleModeStore from "../../store/modeController"
-import imageLoading from "../../../public/image-loading.png"
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import useToggleDashboardStateStore from "../../store/modeController"
+import useToggleModeStore from "../../store/modeController";
+import imageLoading from "../../../public/image-loading.png";
+import useToggleDashboardStateStore from "../../store/modeController";
 import Link from "next/link";
-import Nav from "../../nav/page"
+import Nav from "../../nav/page";
 
 const View = () => {
   const [productData, setProductData] = useState({});
   const [proImage, setProImage] = useState("");
   const [relatedProduct, setRelatedProduct] = useState([]);
   const { cartIds, setCartIds } = useCartStore();
-  const {mode} = useToggleModeStore();
+  const { mode } = useToggleModeStore();
   const { id } = useParams();
   const { dashboardState } = useToggleDashboardStateStore();
   const [showMore, setShowMore] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   async function fectProductData() {
     try {
@@ -47,18 +47,17 @@ const View = () => {
   function displayimage(index) {
     setProImage(Number(index));
   }
-  //console.log("product image real", proImage);
 
   function increaseImage() {
-    if (productData.productImages.length - 1 > proImage) {
+    if (productData.productImages?.length - 1 > proImage) {
       setProImage((prev) => Number(prev) + 1);
-    } else if (productData.productImages.length == proImage) {
+    } else if (productData.productImages?.length == proImage) {
       setProImage((prev) => Number(prev));
     }
   }
 
   function decreaseImage() {
-    if (productData.productImages.length > 0 && proImage >= 1) {
+    if (productData.productImages?.length > 0 && proImage >= 1) {
       setProImage((prev) => Number(prev) - 1);
     } else {
       setProImage((prev) => Number(prev));
@@ -70,6 +69,8 @@ const View = () => {
       return;
     } else {
       setCartIds(id);
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 1500);
     }
   }
 
@@ -90,263 +91,284 @@ const View = () => {
     }
   }
 
-  const showMoreFun = () => { 
+  const showMoreFun = () => {
     setShowMore(!showMore);
-  }
+  };
 
   return (
     <Layout>
-      <div className="w-[100%] pt-2">
-      <div>
-        <Nav />
-      </div>
-      <div className="w-[80%] px-10 pb-1 font-bold">
-                  Discover/
-                  <span className="px-2">{productData?.productCategory}</span>
-                </div>
-        <div className="view-product w-[100%] px-5 flex flex-row">
-          <div className="w-[70%] flex flex-col gap-20 ">
-            <div className="flex flex-row">
-              <div className="h-[450px] w-[25%] overflow-y-scroll scrollbar-track-transparent scrollbar-thin scrollbar-hover:bg-gray-500  scrollbar-thumb-gray-400 text-center rounded-lg p-2">
-                <h1 className="font-bold">View</h1>
-                <div className="flex flex-col gap-2 py-3">
-                  {productData?.productImages?.map((image, index) => (
-                    <div
-                      key={index}
-                      className="w-[80%] h-[80px] mx-auto border-2 border-gray-500 rounded-lg p-2 bg-viewCoverColor hover:p-1"
-                      onClick={() => {
-                        displayimage(index);
-                      }}
-                    >
-                      <Image
-                        src={image}
+      <div className="w-full">
+        <div>
+          <Nav />
+        </div>
+        
+        {/* Breadcrumb */}
+        <div className="w-full px-4 sm:px-6 lg:px-10 py-2">
+          <div className="flex items-center text-sm">
+            <Link href="/" className="text-gray-500 hover:text-alibabaOrange">Home</Link>
+            <span className="mx-2 text-gray-500">/</span>
+            <span className="text-gray-500">{productData?.productCategory}</span>
+            <span className="mx-2 text-gray-500">/</span>
+            <span className="text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+              {productData?.productName?.slice(0, 20)}...
+            </span>
+          </div>
+        </div>
+        
+        {/* Main product container */}
+        <div className="w-full px-4 sm:px-6 lg:px-10">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Product images section */}
+            <div className="w-full lg:w-2/3">
+              <div className="flex flex-col md:flex-row gap-4">
+                {/* Thumbnails */}
+                <div className="md:w-1/4 order-2 md:order-1">
+                  <h3 className="font-bold text-center mb-2 hidden md:block">Gallery</h3>
+                  <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:h-[450px] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent p-2">
+                    {productData?.productImages?.map((image, index) => (
+                      <div
                         key={index}
-                        alt="product image"
-                        width={80}
-                        height={20}
-                        className="object-cover w-full h-full rounded-md cursor-pointer"
+                        className={`min-w-[70px] h-[70px] border-2 ${
+                          proImage === index ? "border-alibabaOrange" : "border-gray-300"
+                        } rounded-lg p-1 hover:border-alibabaOrange cursor-pointer transition-all`}
+                        onClick={() => displayimage(index)}
+                      >
+                        <Image
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          width={80}
+                          height={80}
+                          className="object-cover w-full h-full rounded-md"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Main image */}
+                <div className="md:w-3/4 order-1 md:order-2">
+                  <div className="relative w-full h-[350px] sm:h-[450px] bg-viewCoverColor rounded-lg flex items-center justify-center">
+                    <button 
+                      onClick={decreaseImage}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    
+                    <div className="w-4/5 h-4/5 flex items-center justify-center">
+                      <Image
+                        src={
+                          proImage !== ""
+                            ? productData?.productImages?.[proImage]
+                            : productData?.productImages?.[0] || imageLoading
+                        }
+                        alt="Main product image"
+                        width={400}
+                        height={400}
+                        className="max-w-full max-h-full object-contain"
                       />
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-lg p-4 h-[440px] w-[75%]">
-                
-                <div className="w-[100%] bg-viewCoverColor h-[300px] relative">
-                  <div className="absolute top-[130px] font-bold">
-                    <ChevronLeft
-                      size={20}
-                      onClick={decreaseImage}
-                      strokeWidth={5}
-                      className={`${mode? "text-gray-500 hover:text-gray-700":"text-gray-500 hover:text-gray-700"} w-10 h-10 p-2 rounded-full hover:cursor-pointer`}
-                    />
-                  </div>
-                  <div className="mt-10 px-20  w-[100%] h-[300px]">
-                    <Image
-                      src={
-                        proImage
-                          ? productData?.productImages?.[proImage]
-                          : productData?.productImages?.[0] || imageLoading
-                      }
-                      alt="main product image"
-                      width={100}
-                      height={100}
-                      className="w-[80%] h-full rounded-lg object-contain"
-                    />
-                  </div>
-                  <div className="absolute top-[130px] font-bold right-2">
-                    <ChevronRight
-                      size={20}
+                    
+                    <button 
                       onClick={increaseImage}
-                      strokeWidth={5}
-                      className={`${mode? "text-gray-500 hover:text-gray-700":"text-gray-500 hover:text-gray-700"} w-10 h-10 p-2 rounded-full hover:cursor-pointer`}
-                    />
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div>
-              <div className="text-xl py-3 px-4">
-                <p>May Also Like</p>
-              </div>
-              <div className="card-container flex flex-row flex-wrap gap-2 px-5 w-full">
-                  {relatedProduct.filter((productRel) => (productRel._id !== productData._id)).map((product, index) => (
-                    <div
-                      key={index}
-                      className={`card ${ mode ? dashboardState? "w-[30%]": "w-[35%]": `shadow-gray-800 shadow-sm rounded-lg ${dashboardState ? "w-[30%]" : "w-[30%]"
-                            }`
-                      } h-[280px] overflow-hidden`}
-                    >
-                      <Link href={`/view/${product._id}`}>
-                        <div className={`relative h-[60%] ${mode ? "bg-cardBackground" : "bg-gray-800"}`}>
-                          <Image
-                            src={product.productImages[0]}
-                            alt="Product"
-                            className="w-full h-full object-cover"
-                            width={100}
-                            height={100}
-                            priority
-                          />
-                          <div className="absolute top-3 right-3 bg-alibabaOrange text-white text-sm font-bold py-1 px-3 rounded-lg">
-                            {product.productDiscount}% OFF
-                          </div>
-                        </div>
-                      </Link>
-
-                      <div className="py-1 px-3 h-[40%] flex flex-col gap-1">
-                        <div
-                          className={`text-md h-[50%] py-1 font-semibold flex flex-wrap ${
-                            mode ? "text-black" : "text-darkText"
-                          }`}
-                        >
-                          <Link href={`/view/${product._id}`} className="hover:text-gray-500">
-                            {product.productName.length > 40
-                              ? product.productName.slice(0, 40) + "..."
-                              : product.productName}
-                          </Link>
-                        </div>
-
-                        <div className="text-lg font-semibold text-gray-700 h-[50%] flex flex-row justify-between">
-                          <div className="flex flex-col">
-                            <div className="flex flex-row gap-2 font-bold text-sm">
-                              <div className="text-alibabaOrange font-bold">
-                                $
-                                <span>
-                                  {(
-                                    product.productPrice -
-                                    (product.productPrice / 100) * product.productDiscount
-                                  ).toFixed(2)}
-                                </span>
-                              </div>
-                              <div>
-                                <del className="text-gray-500 font-semibold">
-                                  $ <span>{product.productPrice}</span>
-                                </del>
-                              </div>
-                            </div>
-
-                            <div className="text-sm flex flex-row gap-3">
-                              <div>
-                                <p>15 sales</p>
-                              </div>
-                              <div className="flex flex-row">
-                                <FontAwesomeIcon icon={faStar} className="text-alibabaOrange text-lg" />
-                                <p className="px-2">
-                                  <span>5.0 (10)</span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <div
-                              onClick={() => addToCart(product._id)}
-                              className="w-full text-sm px-2 flex flex-row py-1 text-white rounded-lg duration-200"
-                            >
-                              <FontAwesomeIcon icon={faCartPlus} className="w-6 h-6 text-xl cursor-pointer text-gray-400" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+            {/* Product details section */}
+            <div className="w-full lg:w-1/3">
+              <div className={`p-4 rounded-lg ${mode ? "bg-white shadow-sm" : "bg-gray-800"}`}>
+                {/* Product name */}
+                <h1 className={`text-xl sm:text-2xl font-bold mb-2 ${mode ? "text-gray-800" : "text-gray-200"}`}>
+                  {productData.productName}
+                </h1>
+                
+                {/* Store name */}
+                <div className="text-gray-500 text-sm mb-3">
+                  ZipBuy Online Shopping
                 </div>
-
+                
+                {/* Price section */}
+                <div className="flex items-baseline mb-4">
+                  <span className="text-2xl font-bold text-alibabaOrange mr-3">
+                    ${productData.productPrice && productData.productDiscount
+                      ? (
+                          productData.productPrice -
+                          (productData.productPrice / 100) * productData.productDiscount
+                        ).toFixed(2)
+                      : "0.00"}
+                  </span>
+                  <span className="text-gray-500 line-through">
+                    ${productData.productPrice}
+                  </span>
+                  {productData.productDiscount && (
+                    <span className="ml-2 px-2 py-1 text-xs bg-red-500 text-white rounded">
+                      {productData.productDiscount}% OFF
+                    </span>
+                  )}
+                </div>
+                
+                {/* Ratings and sales */}
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  <span>15 sales</span>
+                  <span className="mx-2">•</span>
+                  <div className="flex items-center">
+                    <FontAwesomeIcon icon={faStar} className="text-yellow-400 mr-1" />
+                    <span>5.0 (10)</span>
+                  </div>
+                </div>
+                
+                {/* Add to cart button */}
+                <div className="mb-6">
+                  <button
+                    onClick={() => addToCart(productData._id)}
+                    className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                      cartIds.includes(productData._id)
+                        ? "bg-green-500 text-white"
+                        : "bg-alibabaOrange hover:bg-orange-600 text-white"
+                    }`}
+                  >
+                    <FontAwesomeIcon icon={faCartPlus} className="mr-2" />
+                    {cartIds.includes(productData._id) ? "Added to Cart" : "Add to Cart"}
+                  </button>
+                  
+                  {addedToCart && (
+                    <div className="mt-2 text-center text-green-500 text-sm">
+                      Product added to your cart!
+                    </div>
+                  )}
+                </div>
+                
+                {/* Shipping information */}
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mb-5">
+                  <h3 className="font-bold text-lg mb-3">
+                    Shipping Information:
+                  </h3>
+                  
+                  {productData.productShipping && productData.productShipping.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-y-2 text-sm">
+                      <div className="font-medium">Weight:</div>
+                      <div>{productData.productShipping[0].weight + "g" || "Not specified"}</div>
+                      
+                      <div className="font-medium">Dimensions:</div>
+                      <div>{productData.productShipping[1].dimensions || "Not specified"}</div>
+                      
+                      <div className="font-medium">Shipping Cost:</div>
+                      <div>{productData.productShipping[2].shippingCost || "Not specified"}</div>
+                      
+                      <div className="font-medium">Estimated Delivery:</div>
+                      <div>{productData.productShipping[3].estimatedDelivery || "Not specified"}</div>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No shipping information available.</p>
+                  )}
+                </div>
+                
+                {/* Product description */}
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                  <h3 className="font-bold text-lg mb-3">About Product</h3>
+                  
+                  <div className={`${showMore ? "max-h-full" : "max-h-[200px] relative"} overflow-hidden`}>
+                    <p className={`text-sm ${mode ? "text-gray-700" : "text-gray-300"}`}>
+                      {productData.productDescription}
+                    </p>
+                    
+                    {!showMore && (
+                      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white dark:from-gray-800 to-transparent"></div>
+                    )}
+                  </div>
+                  
+                  <button
+                    className="mt-2 text-lighGray hover:underline font-medium"
+                    onClick={showMoreFun}
+                  >
+                    {showMore ? "Show Less" : "Show More"}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Product Details Section */}
-          <div className={`w-[30%]  ${mode? "text-gray-800": "text-gray-400"} pt-2 pb-10 px-4`}>
-            <div className="pt-2 font-bold text-lg capitalize">
-              <p>{productData.productName}</p>
-            </div>
-            <div className="text-gray-500 ">
-              ZipBuy Online Shopping
-            </div>
-            <div className="rounded-md py-2 flex flex-row gap-6">
-              <div> 
-                <span className="font-bold text-alibabaOrange">
-                  ${(
-                    productData.productPrice -
-                    (productData.productPrice / 100) * productData.productDiscount
-                  ).toFixed(2)}
-                </span>
-              </div>
-              <div className="text-gray-500">
-                <span>
-                    <del>${productData.productPrice}</del>
-                </span>
-              </div>
-
-            </div>
-
-            <div className="flex flex-row justify-between">
-               <div>
-                  <p className="ml-1">
-                    15 sales ⭐<span>5.0(10)</span>
-                  </p>
-               </div>
-               <div className="">
-                  <div
-                    onClick={() => {
-                      addToCart(productData._id);
-                    }}
-                    className={`${mode ?"text-gray-500": "text-gray-400"}`}
-                  >
-                    <FontAwesomeIcon icon={faCartPlus} className="w-6 h-6 text-xl" />
-                  </div>
-               </div>
-            </div>
-            <div >
-              <h3 className="font-bold text-xl py-1">Shipping Information:</h3>
-              {productData.productShipping &&
-              productData.productShipping.length > 0 ? (
-                <div className="">
-                  <p>
-                    <span className="font-semibold pr-3">
-                      Weight:
-                    </span>
-                    {productData.productShipping[0].weight + "g" ||
-                      "Not specified"}
-                  </p>
-                  <p>
-                    <span className="font-semibold pr-3">
-                      Dimensions:
-                    </span>
-                        {productData.productShipping[1].dimensions ||
-                      "Not specified"}
-                  </p>
-                  <p>
-                    <span className="font-semibold pr-3">
-                      Shipping Cost:
-                    </span>
-                    
-                    {productData.productShipping[2].shippingCost ||
-                      "Not specified"}
-                  </p>
-                  <p>
-                  <span className="font-semibold pr-3">
-                      Estimated Delivery:
-                    </span>
-                    {productData.productShipping[3].estimatedDelivery ||
-                      "Not specified"}
-                  </p>
-                </div>
-              ) : (
-                <p>No shipping information available.</p>
-              )}
-            </div>
+          {/* Related products section */}
+          <div className="mt-10 mb-10">
+            <h2 className="text-xl font-bold mb-6">You May Also Like</h2>
             
-            <div>
-              <p className="text-2xl font-bold py-1">About Product</p>
-              <div className={`${showMore ? "h-fit" : "h-[215px]"} overflow-hidden`}>
-                 {productData.productDescription}
-                 
-              </div>
-              <button className="px-3 rounded-lg mt-3 w-" onClick={showMoreFun} >{showMore ? "Less" : "More"}</button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {relatedProduct
+                .filter((productRel) => productRel._id !== productData._id)
+                .slice(0, 4)
+                .map((product, index) => (
+                  <div
+                    key={index}
+                    className={`rounded-lg overflow-hidden transition-all ${
+                      mode ? "shadow-sm hover:shadow-md" : " shadow-gray-700 hover:shadow-gray-600"
+                    }`}
+                  >
+                    <Link href={`/view/${product._id}`}>
+                      <div className={`relative h-48 ${mode ? 'bg-cardBackground' : 'bg-gray-800'}`}>
+                        <Image
+                          src={product.productImages[0]}
+                          alt={product.productName}
+                          width={200}
+                          height={200}
+                          className="w-full h-full object-contain p-2"
+                          priority
+                        />
+                        <div className="absolute top-2 right-2 bg-alibabaOrange text-white text-xs font-bold py-1 px-2 rounded">
+                          {product.productDiscount}% OFF
+                        </div>
+                      </div>
+                    </Link>
 
+                    <div className="p-3">
+                      <Link href={`/view/${product._id}`}>
+                        <h3 className={`text-sm font-medium mb-2 line-clamp-2 hover:text-alibabaOrange ${
+                          mode ? "text-gray-800" : "text-gray-200"
+                        }`}>
+                          {product.productName}
+                        </h3>
+                      </Link>
+                      
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-alibabaOrange font-bold">
+                              ${(
+                                product.productPrice -
+                                (product.productPrice / 100) * product.productDiscount
+                              ).toFixed(2)}
+                            </span>
+                            <span className="text-xs text-gray-500 line-through">
+                              ${product.productPrice}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center text-xs text-gray-500 mt-1">
+                            <FontAwesomeIcon icon={faStar} className="text-yellow-400 mr-1" />
+                            <span>5.0 (10)</span>
+                          </div>
+                        </div>
+                        
+                        <button
+                          onClick={() => addToCart(product._id)}
+                          className={`p-2 rounded-full transition-colors ${
+                            cartIds.includes(product._id)
+                              ? ""
+                              : ""
+                          }`}
+                          aria-label="Add to cart"
+                        >
+                          <FontAwesomeIcon icon={faCartPlus} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

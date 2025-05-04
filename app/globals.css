@@ -27,10 +27,7 @@ header, footer {
 }
 
 /* Buttons */
-button {
-  background-color: var(--alibaba-orange);
-  color: var(--white);
-}
+
 
 button:hover {
   background-color: var(--dark-gray);
