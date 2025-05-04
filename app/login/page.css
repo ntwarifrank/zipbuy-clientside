@@ -1,18 +1,1 @@
 
-@media (max-width: 768px) {
-    .login-image{
-      display: none;
-    }
-    .login-form{
-        width: 100%;
-    }
-    input{
-        width: 100%;
-    }
-    .login-container{
-        width: 90%;
-    }
-  }
-  .container{
-    background-color: rgb(14, 14, 36);
-  }

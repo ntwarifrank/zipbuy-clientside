@@ -38,47 +38,126 @@ button:hover {
 }
 
 
-.nav{
-  z-index: 1000;
+
+/* Add these styles to your existing CSS file */
+
+/* Responsive breakpoint for extra small devices */
+@media (min-width: 320px) {
+  .xs\:w-\[48\%\] {
+    width: 48%;
+  }
 }
-@media (max-width: 768px) {
-.nav {
-  flex-direction: column;
+
+/* Making search responsive */
+@media (max-width: 640px) {
+  .search-container {
+    width: 100%;
+  }
+  
+  .nav {
+    padding: 0.5rem;
+  }
 }
-.select-div{
-  width: 20%;
-  margin-left: 0px;
+
+/* Improved hover states for mobile */
+@media (hover: hover) {
+  .hovered-icon {
+    display: none;
+  }
+  
+  .group:hover .hovered-icon {
+    display: flex;
+  }
 }
-.search-container {
-  margin-left: 0px;
-  width: 90%;
-  margin-top: 6px;
+
+/* Fix for scrollbars on mobile */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
 }
-.search{
-  width: 100%;
+
+/* Add these styles to your existing CSS file */
+
+/* Responsive breakpoint for extra small devices */
+@media (min-width: 320px) {
+  .xs\:w-\[48\%\] {
+    width: 48%;
+  }
 }
-.search-div{
-  width: 70%;
-}
-.search-icon-div{
-  width: 10%;
-}
-.flag{
-  display: none;
-}
-.prod{
-  top: 220px;
-  right: 77%;
-}
-.profile{
-  width: 40%;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-}
-.cart{
-  margin-left: 0px;
-}
+
+/* Making search responsive */
+@media (max-width: 640px) {
+  .search-container {
+    width: 100%;
+  }
+  
+  .nav {
+    padding: 0.5rem;
+  }
+  
+  /* Smooth transition for search bar */
+  .search-container {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Enhance search bar appearance */
+  .search {
+    height: 35px;
+    font-size: 0.875rem;
+  }
+  
+  /* Improved profile image on mobile */
+  .profile img {
+    object-fit: cover;
+    border-radius: 50%;
+    height: 30px;
+    width: 70px;
+  }
 
 }
 
+/* Improved hover states for mobile */
+@media (hover: hover) {
+  .hovered-icon {
+    display: none;
+  }
+  
+  .group:hover .hovered-icon {
+    display: flex;
+  }
+}
+
+/* Fix for scrollbars on mobile */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Animation for search toggle */
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 50px;
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    max-height: 50px;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+.search-open {
+  animation: slideDown 0.3s forwards;
+}
+
+.search-closed {
+  animation: slideUp 0.3s forwards;
+}

@@ -6,15 +6,16 @@ import { useParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { useCartStore } from "@/app/cartController";
+import useCartStore from "../../store/cartController"
 import "@/app/globals.css";
 import "./page.css";
 import Layout from "@/app/layout/page";
-import useToggleModeStore from "@/app/modeController";
+import useToggleModeStore from "../../store/modeController"
 import imageLoading from "../../../public/image-loading.png"
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { useToggleDashboardStateStore } from "@/app/modeController";
+import useToggleDashboardStateStore from "../../store/modeController"
 import Link from "next/link";
+import Nav from "../../nav/page"
 
 const View = () => {
   const [productData, setProductData] = useState({});
@@ -23,7 +24,8 @@ const View = () => {
   const { cartIds, setCartIds } = useCartStore();
   const {mode} = useToggleModeStore();
   const { id } = useParams();
-  const { dashboardState } = useToggleDashboardStateStore()
+  const { dashboardState } = useToggleDashboardStateStore();
+  const [showMore, setShowMore] = useState(false);
 
   async function fectProductData() {
     try {
@@ -88,9 +90,16 @@ const View = () => {
     }
   }
 
+  const showMoreFun = () => { 
+    setShowMore(!showMore);
+  }
+
   return (
     <Layout>
-      <div className="w-[100%] pt-10">
+      <div className="w-[100%] pt-2">
+      <div>
+        <Nav />
+      </div>
       <div className="w-[80%] px-10 pb-1 font-bold">
                   Discover/
                   <span className="px-2">{productData?.productCategory}</span>
@@ -332,7 +341,12 @@ const View = () => {
             
             <div>
               <p className="text-2xl font-bold py-1">About Product</p>
-              {productData.productDescription}
+              <div className={`${showMore ? "h-fit" : "h-[215px]"} overflow-hidden`}>
+                 {productData.productDescription}
+                 
+              </div>
+              <button className="px-3 rounded-lg mt-3 w-" onClick={showMoreFun} >{showMore ? "Less" : "More"}</button>
+
             </div>
           </div>
         </div>
