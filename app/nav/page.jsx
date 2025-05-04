@@ -127,7 +127,7 @@ const Nav = () => {
         </div>
         
         {/* Mobile Search Bar - Full width on mobile when search is open */}
-        <div className={`w-full ${isSearchOpen ? 'flex' : 'hidden'} sm:hidden mb-2 transition-all duration-300`}>
+        <div className={`w-full ${isSearchOpen ? 'flex' : 'hidden'} sm:hidden transition-all duration-300`}>
           <div className="search-container flex flex-row w-full">
             <div className="search-div w-full h-10 overflow-hidden">
               <input
