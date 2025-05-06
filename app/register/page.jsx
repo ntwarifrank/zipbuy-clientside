@@ -28,6 +28,12 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
 
+    if(password.length < 6){
+      setError("Password must be at least 6 characters");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
         firstName,
